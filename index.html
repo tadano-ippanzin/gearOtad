@@ -3,38 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ギアオタッド暗号-GearOtad converter</title>
+    <title>ギアオタッド暗号</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
-        .card { background: white; width: 100%; max-width: 500px; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { text-align: center; font-size: 1.2em; color: #1a73e8; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        textarea { width: 100%; height: 80px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 16px; margin-bottom: 10px; outline: none; }
-        .btns { display: flex; gap: 8px; margin-bottom: 15px; }
-        button { flex: 1; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .enc { background: #1a73e8; color: white; }
-        .dec { background: #34a853; color: white; }
-        .swap { background: #5f6368; color: white; }
-        button:hover { opacity: 0.8; }
-        .result-box { background: #f8f9fa; border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-top: 10px; }
-        #resultText { font-family: 'Courier New', monospace; font-size: 1.2em; color: #d93025; word-break: break-all; display: block; margin-bottom: 10px; min-height: 1.4em; white-space: pre-wrap; }
-        .copy-btn { background: #fff; border: 1px solid #ccc; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-        .debug-info { font-size: 10px; color: #999; margin-top: 10px; white-space: pre-wrap; line-height: 1.4; border-top: 1px solid #eee; padding-top: 8px; }
+        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #eef2f3; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        textarea { width: 95%; height: 120px; margin: 10px 0; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+        textarea:focus { border-color: #007bff; outline: none; }
+        .btn-group { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        button { padding: 10px 18px; font-size: 15px; cursor: pointer; border: none; border-radius: 6px; background-color: #007bff; color: white; transition: 0.2s; font-weight: bold; }
+        button:hover { background-color: #0056b3; transform: translateY(-1px); }
+        .swap-btn { background-color: #6f42c1; }
+        .copy-btn { background-color: #28a745; }
+        .label { font-weight: bold; display: block; margin-top: 15px; text-align: left; margin-left: 2.5%; color: #333; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
     </style>
 </head>
 <body>
-<div class="card">
-    <h1>ギアオタッド暗号変換ツール</h1>
-    <textarea id="input" placeholder="例:バナナ"></textarea>
-    <div class="btns">
-        <button class="enc" onclick="run(true)">暗号化</button>
-        <button class="dec" onclick="run(false)">復号化</button>
-        <button class="swap" onclick="swap()">入れ換える</button>
+
+<div class="container">
+    <h2>⚙️ ギアオタッド暗号</h2>
+    <span class="label">入力（日本語・数字・暗号）:</span>
+    <textarea id="inputText" placeholder="ここにメッセージを入力..."></textarea>
+    <div class="btn-group">
+        <button onclick="process('encrypt')">暗号化</button>
+        <button onclick="process('decrypt')">復号</button>
+        <button class="swap-btn" onclick="swapText()">入れ換える &#x1F503;</button>
+        <button class="copy-btn" onclick="copyText('inputText')">入力をコピー</button>
     </div>
-    <div class="result-box">
-        <span id="resultText"></span>
-        <button class="copy-btn" onclick="copyResult()">クリップボードにコピー</button>
+    <hr>
+    <span class="label">結果:</span>
+    <textarea id="outputText" readonly placeholder="結果が表示されます..."></textarea>
+    <div class="btn-group">
+        <button class="copy-btn" onclick="copyText('outputText')">結果をコピー</button>
+        <button style="background-color: #dc3545;" onclick="clearAll()">全て消去</button>
     </div>
-    <div id="debug" class="debug-info">ここに工程が表示されます</div>
+</div>
+
+<script>
+    const mapping = {
+        'あ': 'ぬ', 'い': 'わ', 'う': 'ん', 'え': 'え', 'お': 'お',
+        'か': 'き', 'き': 'く', 'く': 'け', 'け': 'こ', 'こ': 'か',
+        'さ': 'し', 'し': 'す', 'す': 'せ', 'せ': 'そ', 'そ': 'さ',
+        'た': 'ち', 'ち': 'つ', 'つ': 'て', 'て': 'と', 'と': 'た',
+        'な': 'に', 'に': 'ぬ', 'ぬ': 'ね', 'ね': 'の', 'の': 'な',
+        'は': 'ひ', 'ひ': 'ふ', 'ふ': 'へ', 'へ': 'ほ', 'ほ': 'は',
+        'ま': 'み', 'み': 'む', 'む': 'め', 'め': 'も', 'も': 'ま',
+        'や': 'ゆ', 'ゆ': 'よ', 'よ': 'や',
+        'ら': 'り', 'り': 'る', 'る': 'れ', 'れ': 'ろ', 'ろ': 'ら',
+        'わ': 'を', 'を': 'ん', 'ん': 'わ',
+        '0': '⦰', '1': '⦑', '2': '⦒', '3': '⦓', '4': '⦔',
+        '5': '⦕', '6': '⦖', '7': '⦗', '8': '⦘', '9': '⦙'
+    };
+
+    const reverseMapping = Object.fromEntries(Object.entries(mapping).map(([k, v]) => [v, k]));
+
+    function process(mode) {
+        const input = document.getElementById('inputText').value;
+        const dict = (mode === 'encrypt') ? mapping : reverseMapping;
+        let result = "";
+        
+        // 絵文字・特殊文字対応の分割
+        const chars = Array.from(input);
+
+        for (let char of chars) {
+            let hiraChar = char.replace(/[\u30a1-\u30f6]/g, s => String.fromCharCode(s.charCodeAt(0) - 0x60));
+            if (dict[hiraChar]) {
+                result += dict[hiraChar];
+            } else if (dict[char]) {
+                result += dict[char];
+            } else {
+                result += char;
+            }
+        }
+        document.getElementById('outputText').value = result;
+    }
+
+    function swapText() {
+        const inputArea = document.getElementById('inputText');
+        const outputArea = document.getElementById('outputText');
+        const temp = inputArea.value;
+        inputArea.value = outputArea.value;
+        outputArea.value = temp;
+    }
+
+    function copyText(areaId) {
+        const text = document.getElementById(areaId);
+        if (!text.value) return;
+        text.select();
+        document.execCommand('copy');
+        alert("コピーしました！");
+    }
+
+    function clearAll() {
+        if(confirm("すべて消去しますか？")) {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').value = '';
+        }
+    }
+</script>
+</body>
+</html>    <div id="debug" class="debug-info">ここに工程が表示されます</div>
 </div>
 
 <script>
