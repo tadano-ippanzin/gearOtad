@@ -5,352 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ギアオタッド暗号</title>
     <style>
-        :root { --val: 238; }
-        body { 
-            font-family: sans-serif; text-align: center; padding: 20px; 
-            background-color: rgb(var(--val), var(--val), var(--val)); 
-            color: rgb(calc(255 - var(--val)), calc(255 - var(--val)), calc(255 - var(--val))); 
-            transition: background-color 0.1s; margin: 0;
-        }
+        :root { --val: 120; }
+        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: rgb(var(--val), var(--val), var(--val)); color: rgb(calc(255 - var(--val)), calc(255 - var(--val)), calc(255 - var(--val))); transition: background-color 0.1s; margin: 0; }
         .mode-slider-container { margin: 10px 0 20px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
         input[type="range"] { width: 200px; cursor: pointer; }
-
-        .container { 
-            max-width: 600px; margin: auto; padding: 20px; border-radius: 12px; transition: 0.1s;
-            background-color: rgb(calc(var(--val) + 10), calc(var(--val) + 10), calc(var(--val) + 10));
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid rgba(128,128,128,0.3);
-        }
-
-        textarea { 
-            width: 95%; height: 120px; margin: 10px 0; padding: 12px; border-radius: 8px; font-size: 16px; box-sizing: border-box; display: block; margin-left: auto; margin-right: auto; transition: 0.1s;
-            background-color: rgb(calc(var(--val) - 20), calc(var(--val) - 20), calc(var(--val) - 20));
-            color: rgb(calc(255 - var(--val)), calc(255 - var(--val)), calc(255 - var(--val)));
-            border: 2px solid rgba(128,128,128,0.5);
-        }
-        textarea:focus { border-color: #007bff; outline: none; }
-
-        .counter { text-align: right; font-size: 12px; margin-right: 2.5%; margin-top: -8px; margin-bottom: 10px; opacity: 0.8; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border-radius: 12px; background-color: rgb(calc(var(--val) + 15), calc(var(--val) + 15), calc(var(--val) + 15)); box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(128,128,128,0.3); }
+        textarea { width: 95%; height: 120px; margin: 10px 0; padding: 12px; border-radius: 8px; font-size: 16px; box-sizing: border-box; display: block; margin-left: auto; margin-right: auto; background-color: rgb(calc(var(--val) - 10), calc(var(--val) - 10), calc(var(--val) - 10)); color: rgb(calc(255 - var(--val)), calc(255 - var(--val)), calc(255 - var(--val))); border: 2px solid rgba(128,128,128,0.5); }
         .btn-group { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-        
         button { padding: 10px 18px; font-size: 15px; cursor: pointer; border: none; border-radius: 6px; background-color: #007bff; color: white; transition: 0.2s; font-weight: bold; }
-        button:hover { filter: brightness(1.2); }
-        .swap-btn { background-color: #6f42c1; }
-        .copy-btn { background-color: #28a745; }
-        .tweet-btn { background-color: #000000; border: 1px solid #555; }
-        .delete-btn { background-color: #dc3545; }
-
+        .swap-btn { background-color: #6f42c1; } .copy-btn { background-color: #28a745; } .tweet-btn { background-color: #000000; border: 1px solid #555; } .delete-btn { background-color: #dc3545; }
         .label { font-weight: bold; display: block; margin-top: 15px; text-align: left; margin-left: 2.5%; }
         hr { border: 0; border-top: 1px solid rgba(128,128,128,0.3); margin: 20px 0; }
+        .counter { text-align: right; font-size: 12px; margin-right: 2.5%; margin-top: -8px; margin-bottom: 10px; opacity: 0.8; }
     </style>
 </head>
 <body>
-
-<div class="mode-slider-container">
-    <span>🌙 ダーク</span>
-    <input type="range" id="themeSlider" min="40" max="250" value="238" oninput="updateTheme(this.value)">
-    <span>ライト ☀️</span>
-</div>
-
-<div class="container">
-    <h2>⚙️ ギアオタッド暗号</h2>
-    
-    <span class="label">入力（日本語・数字・暗号）:</span>
-    <textarea id="inputText" placeholder="ここにメッセージを入力..." oninput="updateCounter()"></textarea>
-    <div id="charCount" class="counter">0 文字</div>
-    
-    <div class="btn-group">
-        <button onclick="process('encrypt')">暗号化</button>
-        <button onclick="process('decrypt')">復号</button>
-        <button class="swap-btn" onclick="swapText()">入れ換える &#x1F503;</button>
-        <button class="copy-btn" onclick="copyText('inputText')">入力をコピー</button>
+    <div class="mode-slider-container">
+        <span>ダークサイド</span>
+        <input type="range" id="themeSlider" min="30" max="250" value="120" oninput="updateTheme(this.value)">
+        <span>ライトサイド</span>
+    </div>
+    <div class="container">
+        <h2>⚙️ ギアオタッド暗号</h2>
+        <span class="label">入力 (日本語・数字・暗号):</span>
+        <textarea id="inputText" placeholder="ここにメッセージを入力..." oninput="updateCounter()"></textarea>
+        <div id="charCount" class="counter">0 文字</div>
+        <div class="btn-group">
+            <button onclick="process('encrypt')">暗号化</button>
+            <button onclick="process('decrypt')">復号化</button>
+            <button class="swap-btn" onclick="swapText()">入れ換える &#x1F503;</button>
+            <button class="copy-btn" onclick="copyText('inputText')">入力をコピー</button>
+        </div>
+        <hr>
+        <span class="label">結果:</span>
+        <textarea id="outputText" readonly placeholder="結果が表示されます..."></textarea>
+        <div class="btn-group">
+            <button class="copy-btn" onclick="copyText('outputText')">結果をコピー</button>
+            <button class="tweet-btn" onclick="tweet()">𝕏 ツイート</button>
+            <button class="delete-btn" onclick="clearAll()">全て消去</button>
+        </div>
     </div>
 
-    <hr>
-
-    <span class="label">結果:</span>
-    <textarea id="outputText" readonly placeholder="結果が表示されます..."></textarea>
-    
-    <div class="btn-group">
-        <button class="copy-btn" onclick="copyText('outputText')">結果をコピー</button>
-        <button class="tweet-btn" onclick="tweet()">𝕏 ツイート</button>
-        <button class="delete-btn" onclick="clearAll()">全て消去</button>
-    </div>
-</div>
-
-<script>
-    const mapping = {'あ': 'ぬ', 'い': 'わ', 'う': 'ん', 'え': 'え', 'お': 'お','か': 'き', 'き': 'く', 'く': 'け', 'け': 'こ', 'こ': 'か','さ': 'し', 'し': 'す', 'す': 'せ', 'せ': 'そ', 'そ': 'さ','た': 'ち', 'ち': 'つ', 'つ': 'て', 'て': 'と', 'と': 'た','な': 'に', 'に': 'ぬ', 'ぬ': 'ね', 'ね': 'の', 'の': 'な','は': 'ひ', 'ひ': 'ふ', 'ふ': 'へ', 'へ': 'ほ', 'ほ': 'は','ま': 'み', 'み': 'む', 'む': 'め', 'め': 'も', 'も': 'ま','や': 'ゆ', 'ゆ': 'よ', 'よ': 'や','ら': 'り', 'り': 'る', 'る': 'れ', 'れ': 'ろ', 'ろ': 'ら','わ': 'を', 'を': 'ん', 'ん': 'わ','0': '⦰', '1': '⦑', '2': '⦒', '3': '⦓', '4': '⦔','5': '⦕', '6': '⦖', '7': '⦗', '8': '⦘', '9': '⦙'};
-    const reverseMapping = Object.fromEntries(Object.entries(mapping).map(([k, v]) => [v, k]));
-
-    function updateTheme(val) { document.documentElement.style.setProperty('--val', val); }
-    function updateCounter() {
-        const text = document.getElementById('inputText').value;
-        document.getElementById('charCount').textContent = Array.from(text).length + " 文字";
-    }
-    function process(mode) {
-        const input = document.getElementById('inputText').value;
-        const dict = (mode === 'encrypt') ? mapping : reverseMapping;
-        let result = "";
-        for (let char of Array.from(input)) {
-            let hiraChar = char.replace(/[\u30a1-\u30f6]/g, s => String.fromCharCode(s.charCodeAt(0) - 0x60));
-            result += (dict[hiraChar] || dict[char] || char);
-        }
-        document.getElementById('outputText').value = result;
-    }
-    function swapText() {
-        const inputArea = document.getElementById('inputText');
-        const outputArea = document.getElementById('outputText');
-        const temp = inputArea.value;
-        inputArea.value = outputArea.value;
-        outputArea.value = temp;
-        updateCounter();
-    }
-    function copyText(areaId) {
-        const text = document.getElementById(areaId);
-        if (!text.value) return;
-        text.select();
-        document.execCommand('copy');
-        alert("コピーしました！");
-    }
-    function clearAll() {
-        if(confirm("すべて消去しますか？")) {
-            document.getElementById('inputText').value = '';
-            document.getElementById('outputText').value = '';
-            updateCounter();
-        }
-    }
-    function tweet() {
-        const text = document.getElementById('outputText').value;
-        if (!text) return;
-        const tweetText = encodeURIComponent(`ギアオタッド暗号『${text}』\nhttps://tadano-ippanzin.github.io/gearOtad/\n製作者:@tadanoippanjhin\n#ギアオタッド暗号`);
-        window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
-    }
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ギアオタッド暗号</title>
-    <style>
-        :root { --val: 238; }
-        body { 
-            font-family: sans-serif; text-align: center; padding: 20px; 
-            background-color: rgb(var(--val), var(--val), var(--val)); 
-            color: rgb(calc(255 - var(--val)), calc(255 - var(--val)), calc(255 - var(--val))); 
-            transition: background-color 0.1s; margin: 0;
-        }
-        .mode-slider-container { margin: 10px 0 20px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        input[type="range"] { width: 200px; cursor: pointer; }
-
-        .container { 
-            max-width: 600px; margin: auto; padding: 20px; border-radius: 12px; transition: 0.1s;
-            background-color: rgb(calc(var(--val) + 10), calc(var(--val) + 10), calc(var(--val) + 10));
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid rgba(128,128,128,0.3);
-        }
-
-        textarea { 
-            width: 95%; height: 120px; margin: 10px 0; padding: 12px; border-radius: 8px; font-size: 16px; box-sizing: border-box; display: block; margin-left: auto; margin-right: auto; transition: 0.1s;
-            background-color: rgb(calc(var(--val) - 20), calc(var(--val) - 20), calc(var(--val) - 20));
-            color: rgb(calc(255 - var(--val)), calc(255 - var(--val)), calc(255 - var(--val)));
-            border: 2px solid rgba(128,128,128,0.5);
-        }
-        textarea:focus { border-color: #007bff; outline: none; }
-
-        .counter { text-align: right; font-size: 12px; margin-right: 2.5%; margin-top: -8px; margin-bottom: 10px; opacity: 0.8; }
-        .btn-group { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-        
-        button { padding: 10px 18px; font-size: 15px; cursor: pointer; border: none; border-radius: 6px; background-color: #007bff; color: white; transition: 0.2s; font-weight: bold; }
-        button:hover { filter: brightness(1.2); }
-        .swap-btn { background-color: #6f42c1; }
-        .copy-btn { background-color: #28a745; }
-        .tweet-btn { background-color: #000000; border: 1px solid #555; }
-        .delete-btn { background-color: #dc3545; }
-
-        .label { font-weight: bold; display: block; margin-top: 15px; text-align: left; margin-left: 2.5%; }
-        hr { border: 0; border-top: 1px solid rgba(128,128,128,0.3); margin: 20px 0; }
-    </style>
-</head>
-<body>
-
-<div class="mode-slider-container">
-    <span>ダークサイド</span>
-    <input type="range" id="themeSlider" min="40" max="250" value="238" oninput="updateTheme(this.value)">
-    <span>ライトサイド</span>
-</div>
-
-<div class="container">
-    <h2>⚙️ ギアオタッド暗号</h2>
-    
-    <span class="label">入力（日本語・数字・暗号）:</span>
-    <textarea id="inputText" placeholder="ここにメッセージを入力..." oninput="updateCounter()"></textarea>
-    <div id="charCount" class="counter">0 文字</div>
-    
-    <div class="btn-group">
-        <button onclick="process('encrypt')">暗号化</button>
-        <button onclick="process('decrypt')">復号化</button>
-        <button class="swap-btn" onclick="swapText()">入れ換える &#x1F503;</button>
-        <button class="copy-btn" onclick="copyText('inputText')">入力をコピー</button>
-    </div>
-
-    <hr>
-
-    <span class="label">結果:</span>
-    <textarea id="outputText" readonly placeholder="結果が表示されます..."></textarea>
-    
-    <div class="btn-group">
-        <button class="copy-btn" onclick="copyText('outputText')">結果をコピー</button>
-        <button class="tweet-btn" onclick="tweet()">Xにツイート</button>
-        <button class="delete-btn" onclick="clearAll()">全て消去</button>
-    </div>
-</div>
-
-<script>
-    const mapping = {'あ': 'ぬ', 'い': 'わ', 'う': 'ん', 'え': 'え', 'お': 'お','か': 'き', 'き': 'く', 'く': 'け', 'け': 'こ', 'こ': 'か','さ': 'し', 'し': 'す', 'す': 'せ', 'せ': 'そ', 'そ': 'さ','た': 'ち', 'ち': 'つ', 'つ': 'て', 'て': 'と', 'と': 'た','な': 'に', 'に': 'ぬ', 'ぬ': 'ね', 'ね': 'の', 'の': 'な','は': 'ひ', 'ひ': 'ふ', 'ふ': 'へ', 'へ': 'ほ', 'ほ': 'は','ま': 'み', 'み': 'む', 'む': 'め', 'め': 'も', 'も': 'ま','や': 'ゆ', 'ゆ': 'よ', 'よ': 'や','ら': 'り', 'り': 'る', 'る': 'れ', 'れ': 'ろ', 'ろ': 'ら','わ': 'を', 'を': 'ん', 'ん': 'わ','0': '⦰', '1': '⦑', '2': '⦒', '3': '⦓', '4': '⦔','5': '⦕', '6': '⦖', '7': '⦗', '8': '⦘', '9': '⦙'};
-    const reverseMapping = Object.fromEntries(Object.entries(mapping).map(([k, v]) => [v, k]));
-
-    function updateTheme(val) { document.documentElement.style.setProperty('--val', val); }
-    function updateCounter() {
-        const text = document.getElementById('inputText').value;
-        document.getElementById('charCount').textContent = Array.from(text).length + " 文字";
-    }
-    function process(mode) {
-        const input = document.getElementById('inputText').value;
-        const dict = (mode === 'encrypt') ? mapping : reverseMapping;
-        let result = "";
-        for (let char of Array.from(input)) {
-            let hiraChar = char.replace(/[\u30a1-\u30f6]/g, s => String.fromCharCode(s.charCodeAt(0) - 0x60));
-            result += (dict[hiraChar] || dict[char] || char);
-        }
-        document.getElementById('outputText').value = result;
-    }
-    function swapText() {
-        const inputArea = document.getElementById('inputText');
-        const outputArea = document.getElementById('outputText');
-        const temp = inputArea.value;
-        inputArea.value = outputArea.value;
-        outputArea.value = temp;
-        updateCounter();
-    }
-    function copyText(areaId) {
-        const text = document.getElementById(areaId);
-        if (!text.value) return;
-        text.select();
-        document.execCommand('copy');
-        alert("コピーしました！");
-    }
-    function clearAll() {
-        if(confirm("すべて消去しますか？")) {
-            document.getElementById('inputText').value = '';
-            document.getElementById('outputText').value = '';
-            updateCounter();
-        }
-    }
-    function tweet() {
-        const text = document.getElementById('outputText').value;
-        if (!text) return;
-        const tweetText = encodeURIComponent(`ギアオタッド暗号『${text}』\nhttps://tadano-ippanzin.github.io/gearOtad/\n製作者:@tadanoippanjhin\n#ギアオタッド暗号`);
-        window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
-    }
-</script>
-</body>
-</html>    </div>
-
-    <hr>
-
-    <span class="label">結果:</span>
-    <textarea id="outputText" readonly placeholder="結果が表示されます..."></textarea>
-    
-    <div class="btn-group">
-        <button class="copy-btn" onclick="copyText('outputText')">結果をコピー</button>
-        <button class="tweet-btn" onclick="tweet()">𝕏 ツイート</button>
-        <button class="delete-btn" onclick="clearAll()">全て消去</button>
-    </div>
-</div>
-
-<script>
-    const mapping = {
-        'あ': 'ぬ', 'い': 'わ', 'う': 'ん', 'え': 'え', 'お': 'お',
-        'か': 'き', 'き': 'く', 'く': 'け', 'け': 'こ', 'こ': 'か',
-        'さ': 'し', 'し': 'す', 'す': 'せ', 'せ': 'そ', 'そ': 'さ',
-        'た': 'ち', 'ち': 'つ', 'つ': 'て', 'て': 'と', 'と': 'た',
-        'な': 'に', 'に': 'ぬ', 'ぬ': 'ね', 'ね': 'の', 'の': 'な',
-        'は': 'ひ', 'ひ': 'ふ', 'ふ': 'へ', 'へ': 'ほ', 'ほ': 'は',
-        'ま': 'み', 'み': 'む', 'む': 'め', 'め': 'も', 'も': 'ま',
-        'や': 'ゆ', 'ゆ': 'よ', 'よ': 'や',
-        'ら': 'り', 'り': 'る', 'る': 'れ', 'れ': 'ろ', 'ろ': 'ら',
-        'わ': 'を', 'を': 'ん', 'ん': 'わ',
-        '0': '⦰', '1': '⦑', '2': '⦒', '3': '⦓', '4': '⦔',
-        '5': '⦕', '6': '⦖', '7': '⦗', '8': '⦘', '9': '⦙'
-    };
-
-    const reverseMapping = Object.fromEntries(Object.entries(mapping).map(([k, v]) => [v, k]));
-
-    function updateTheme(val) {
-        document.documentElement.style.setProperty('--val', val);
-    }
-
-    function updateCounter() {
-        const text = document.getElementById('inputText').value;
-        const count = Array.from(text).length;
-        document.getElementById('charCount').textContent = count + " 文字";
-    }
-
-    function process(mode) {
-        const input = document.getElementById('inputText').value;
-        const dict = (mode === 'encrypt') ? mapping : reverseMapping;
-        let result = "";
-        const chars = Array.from(input);
-        for (let char of chars) {
-            let hiraChar = char.replace(/[\u30a1-\u30f6]/g, s => String.fromCharCode(s.charCodeAt(0) - 0x60));
-            if (dict[hiraChar]) {
-                result += dict[hiraChar];
-            } else if (dict[char]) {
-                result += dict[char];
-            } else {
-                result += char;
+    <script>
+        const mapping = {'あ':'ぬ','い':'わ','う':'ん','え':'え','お':'お','か':'き','き':'く','く':'け','け':'こ','こ':'か','さ':'し','し':'す','す':'せ','せ':'そ','そ':'さ','た':'ち','ち':'つ','つ':'て','て':'と','と':'た','な':'に','に':'ぬ','ぬ':'ね','ね':'の','の':'な','は':'ひ','ひ':'ふ','ふ':'へ','へ':'ほ','ほ':'は','ま':'み','み':'む','む':'め','め':'も','も':'ま','や':'ゆ','ゆ':'よ','よ':'や','ら':'り','り':'る','る':'れ','れ':'ろ','ろ':'ら','わ':'を','を':'ん','ん':'わ','0':'⦰','1':'⦑','2':'⦒','3':'⦓','4':'⦔','5':'⦕','6':'⦖','7':'⦗','8':'⦘','9':'⦙'};
+        const rev = Object.fromEntries(Object.entries(mapping).map(([k,v])=>[v,k]));
+        function updateTheme(val) { document.documentElement.style.setProperty('--val', val); }
+        function updateCounter() { document.getElementById('charCount').textContent = Array.from(document.getElementById('inputText').value).length + " 文字"; }
+        function process(m) {
+            const input = document.getElementById('inputText').value;
+            const d = (m === 'encrypt') ? mapping : rev;
+            let res = "";
+            for (let c of Array.from(input)) {
+                let h = c.replace(/[\u30a1-\u30f6]/g, s => String.fromCharCode(s.charCodeAt(0) - 0x60));
+                res += (d[h] || d[c] || c);
             }
+            document.getElementById('outputText').value = res;
         }
-        document.getElementById('outputText').value = result;
-    }
-
-    function swapText() {
-        const inputArea = document.getElementById('inputText');
-        const outputArea = document.getElementById('outputText');
-        const temp = inputArea.value;
-        inputArea.value = outputArea.value;
-        outputArea.value = temp;
-        updateCounter();
-    }
-
-    function copyText(areaId) {
-        const text = document.getElementById(areaId);
-        if (!text.value) return;
-        text.select();
-        document.execCommand('copy');
-        alert("コピーしました！");
-    }
-
-    function clearAll() {
-        if(confirm("すべて消去しますか？")) {
-            document.getElementById('inputText').value = '';
-            document.getElementById('outputText').value = '';
-            updateCounter();
+        function swapText() { const i = document.getElementById('inputText'), o = document.getElementById('outputText'); [i.value, o.value] = [o.value, i.value]; updateCounter(); }
+        function copyText(id) { const t = document.getElementById(id); if(!t.value) return; t.select(); document.execCommand('copy'); alert("コピーしました！"); }
+        function clearAll() { if(confirm("すべて消去しますか？")) { document.getElementById('inputText').value=''; document.getElementById('outputText').value=''; updateCounter(); } }
+        function tweet() {
+            const t = document.getElementById('outputText').value; if(!t) return;
+            window.open(`https://twitter.com/intent/tweet?text=` + encodeURIComponent(`ギアオタッド暗号『${t}』\nhttps://tadano-ippanzin.github.io/gearOtad/\n製作者:@tadanoippanjhin\n#ギアオタッド暗号`), '_blank');
         }
-    }
-
-    function tweet() {
-        const text = document.getElementById('outputText').value;
-        if (!text) return;
-        const tweetText = encodeURIComponent(
-            `ギアオタッド暗号『${text}』\n` +
-            `https://tadano-ippanzin.github.io/gearOtad/\n` +
-            `製作者:@tadanoippanjhin\n` +
-            `#ギアオタッド暗号`
-        );
-        window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
-    }
+    </script>
+</body>
 </html>
-<!--ここまで見たなら変換するはず。そうに決まってる。-->
