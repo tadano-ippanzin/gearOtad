@@ -7,7 +7,6 @@
     <link rel="icon" href="https://assets.st-note.com/img/1766740914-5chXSxNAGbfo69q2YEz70pn1.png?width=500&height=500&fit=crop" type="image/png">
     <style>
         :root { --val: 30; }
-        
         body { 
             font-family: 'Segoe UI', sans-serif; 
             text-align: center; 
@@ -19,8 +18,6 @@
             overflow-x: hidden;
             min-height: 100vh;
         }
-
-        /* 背景の巨大歯車 */
         .bg-gear {
             position: fixed;
             bottom: -10vmin;
@@ -33,15 +30,9 @@
             color: rgb(calc(255 - var(--val)), calc(255 - var(--val)), calc(255 - var(--val)));
             animation: spin 60s linear infinite;
         }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .mode-slider-container { margin: 10px 0 20px 0; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; }
         input[type="range"] { width: 200px; cursor: pointer; accent-color: #6f42c1; }
-
         .container { 
             max-width: 600px; 
             margin: auto; 
@@ -53,7 +44,6 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
             border: 1px solid rgba(128,128,128,0.2); 
         }
-
         .logo-wrapper { margin-bottom: 20px; }
         .main-logo {
             max-width: 350px;
@@ -62,7 +52,6 @@
             filter: drop-shadow(0 0 10px rgba(255,255,255, calc((255 - var(--val)) / 1200)));
             transition: filter 0.3s ease;
         }
-
         textarea { 
             width: 95%; height: 120px; margin: 15px auto; padding: 15px; border-radius: 8px; font-size: 16px; box-sizing: border-box; display: block; 
             background-color: rgba(calc(var(--val) - 10), calc(var(--val) - 10), calc(var(--val) - 10), 0.9); 
@@ -71,19 +60,17 @@
             transition: 0.2s;
             resize: vertical;
         }
-
         .btn-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         button { 
-            padding: 12px 18px; font-size: 15px; cursor: pointer; border: none; border-radius: 8px; 
-            background-color: #007bff; color: white; transition: 0.2s; font-weight: bold; 
+            padding: 12px 18px; font-size: 15px; cursor: pointer; border-radius: 8px; 
+            transition: 0.3s; font-weight: bold;
+            background-color: rgb(calc(255 - var(--val)), calc(255 - var(--val)), calc(255 - var(--val)));
+            color: rgb(var(--val), var(--val), var(--val));
+            border: 1px solid rgba(128,128,128,0.5);
         }
-        button:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        
-        .swap-btn { background-color: #6f42c1; } 
-        .copy-btn { background-color: #28a745; } 
-        .tweet-btn { background-color: #000000; border: 1px solid #555; } 
-        .delete-btn { background-color: #dc3545; }
-        
+        button:hover { transform: translateY(-2px); filter: brightness(0.8); }
+        .swap-btn { border: 2px solid #6f42c1; } 
+        .tweet-btn { background-color: #000; color: #fff; border: 1px solid #555; }
         .label { font-weight: bold; display: block; margin-top: 15px; text-align: left; margin-left: 2.5%; font-size: 0.9em; opacity: 0.8; }
         hr { border: 0; border-top: 1px solid rgba(128,128,128,0.3); margin: 25px 0; }
         .counter { text-align: right; font-size: 12px; margin-right: 2.5%; margin-top: -8px; margin-bottom: 10px; opacity: 0.7; }
@@ -92,43 +79,35 @@
 </head>
 <body>
     <div class="bg-gear" id="gear">⚙️</div>
-
     <div class="mode-slider-container">
         <span>ダークサイド</span>
         <input type="range" id="themeSlider" min="30" max="250" value="30" oninput="updateTheme(this.value)">
         <span>ライトサイド</span>
     </div>
-
     <div class="container">
         <div class="logo-wrapper">
             <img src="https://assets.st-note.com/production/uploads/images/239016490/rectangle_large_type_2_c160e3917400173cbde2ae9e19b03d89.png?width=2000&height=2000&fit=bounds&quality=85" alt="gearOtad" class="main-logo">
         </div>
-
         <span class="label">入力:</span>
         <textarea id="inputText" placeholder="ここにメッセージを入力..." oninput="updateCounter()"></textarea>
         <div id="charCount" class="counter">0 文字</div>
-        
         <div class="btn-group">
             <button onclick="process('encrypt')">暗号化</button>
             <button onclick="process('decrypt')">復号化</button>
-            <button class="swap-btn" onclick="swapText()">入れ換える &#x1F503;</button>
+            <button class="swap-btn" onclick="swapText()">入れ換える</button>
         </div>
-        
         <hr>
-        
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 2.5%;">
             <span class="label" style="margin-left: 0;">結果:</span>
             <span id="diffDisplay" class="diff-counter" style="color: gray; margin-top: 15px;">±0</span>
         </div>
         <textarea id="outputText" readonly placeholder="結果が表示されます..."></textarea>
-        
         <div class="btn-group">
-            <button class="copy-btn" onclick="copyText('outputText')">結果をコピー</button>
+            <button onclick="copyText('outputText')">結果をコピー</button>
             <button class="tweet-btn" onclick="tweet()">𝕏でポスト</button>
-            <button class="delete-btn" onclick="clearAll()">全て消去</button>
+            <button onclick="clearAll()">全て消去</button>
         </div>
     </div>
-
     <script>
         const mapping = {'あ':'ぬ','い':'わ','う':'ん','え':'え','お':'お','か':'き','き':'く','く':'け','け':'こ','こ':'か','さ':'し','し':'す','す':'せ','せ':'そ','そ':'さ','た':'ち','ち':'つ','つ':'て','て':'と','と':'た','な':'に','に':'ぬ','ぬ':'ね','ね':'の','の':'な','は':'ひ','ひ':'ふ','ふ':'へ','へ':'ほ','ほ':'は','ま':'み','み':'む','む':'め','め':'も','も':'ま','や':'ゆ','ゆ':'よ','よ':'や','ら':'り','り':'る','る':'れ','れ':'ろ','ろ':'ら','わ':'を','を':'ん','ん':'わ','0':'⦰','1':'⦑','2':'⦒','3':'⦓','4':'⦔','5':'⦕','6':'⦖','7':'⦗','8':'⦘','9':'⦙'};
         const rev = Object.fromEntries(Object.entries(mapping).map(([k,v])=>[v,k]));
