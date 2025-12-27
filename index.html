@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gearOtad - ギアオタッド暗号</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="gearOtad">
+    <link rel="apple-touch-icon" href="https://assets.st-note.com/img/1766740914-5chXSxNAGbfo69q2YEz70pn1.png?width=500&height=500&fit=crop">
     <link rel="icon" href="https://assets.st-note.com/img/1766740914-5chXSxNAGbfo69q2YEz70pn1.png?width=500&height=500&fit=crop" type="image/png">
     <style>
         :root { --val: 30; }
@@ -38,7 +42,6 @@
     </div>
     <div class="container">
         <div class="logo-wrapper"><img src="https://assets.st-note.com/production/uploads/images/239016490/rectangle_large_type_2_c160e3917400173cbde2ae9e19b03d89.png?width=2000&height=2000&fit=bounds&quality=85" class="main-logo"></div>
-        
         <div class="history-box">
             <div class="history-controls">
                 <button onclick="toggleAllHistory(true)">全選択</button>
@@ -48,7 +51,6 @@
             </div>
             <div id="historyList" class="history-list"></div>
         </div>
-
         <span class="label">入力:</span>
         <textarea id="inputText" oninput="updateCounter()"></textarea>
         <div id="charCount" class="counter">0 文字</div>
@@ -85,7 +87,7 @@
         }
         function process(m) {
             const count = parseInt(document.getElementById('iterations').value) || 1;
-            if (count >= 10000 && !confirm("重くなりますがよろしいですか？")) return;
+            if (count >= 10000 && !confirm("処理が重くなります。よろしいですか?")) return;
             let current = document.getElementById('inputText').value, d = (m === 'encrypt' ? mapping : rev);
             for(let i=0; i<count; i++) current = runCipher(current, d);
             document.getElementById('outputText').value = current; updateDiff();
@@ -113,8 +115,8 @@
         function clearAllHistory() { if(confirm("履歴を全削除しますか？")) { history = []; localStorage.removeItem('go_history'); renderHistory(); } }
         function swapText() { const i = document.getElementById('inputText'), o = document.getElementById('outputText'); [i.value, o.value] = [o.value, i.value]; updateCounter(); }
         function copyText(id) { const t = document.getElementById(id); if(!t.value) return; t.select(); document.execCommand('copy'); }
-        function clearUI() { if(confirm("画面をクリアしますか？")) { document.getElementById('inputText').value=''; document.getElementById('outputText').value=''; updateCounter(); } }
-        function tweet() { const t = document.getElementById('outputText').value; if(!t) return; window.open(`https://twitter.com/intent/tweet?text=` + encodeURIComponent(`ギアオタッド暗号『${t}』\nhttps://gearotad.is-a.dev/`), '_blank'); }
+        function clearUI() { if(confirm("消去？")) { document.getElementById('inputText').value=''; document.getElementById('outputText').value=''; updateCounter(); } }
+        function tweet() { const t = document.getElementById('outputText').value; if(!t) return; window.open(`https://twitter.com/intent/tweet?text=` + encodeURIComponent(`ギアオタッド暗号『${t}』\nhttps://tadano-ippanzin.github.io/gearOtad/`), '_blank'); }
         renderHistory();
     </script>
 </body>
